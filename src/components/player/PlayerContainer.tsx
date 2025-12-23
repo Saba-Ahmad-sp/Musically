@@ -17,12 +17,19 @@ interface PlayerContainerProps {
 }
 
 export default function PlayerContainer({ initialSongs }: PlayerContainerProps) {
-  const { currentSong, setSong, isFullPlayerOpen, setQueue, activeTab, setActiveTab, likedSongs, searchQuery, setSearchQuery, searchResults, setSearchResults, isSearching, setIsSearching } = usePlayerStore();
+  const { currentSong, setSong, isFullPlayerOpen, setQueue, activeTab, setActiveTab, likedSongs, searchQuery, setSearchQuery, searchResults, setSearchResults, isSearching, setIsSearching, trendingSongs, setTrendingSongs } = usePlayerStore();
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   useEffect(() => {
     setQueue(initialSongs);
   }, [initialSongs, setQueue]);
+
+  // Fetch Trending Logic
+  useEffect(() => {
+      if (activeTab === 'Trending' && trendingSongs.length === 0) {
+          api.getTrending().then(songs => setTrendingSongs(songs));
+      }
+  }, [activeTab, trendingSongs.length, setTrendingSongs]);
 
   // Search API Logic
   useEffect(() => {
@@ -198,7 +205,7 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                     </div>
                     )
                 ) : activeTab === 'Trending' ? (
-                    <SongGrid songs={[...initialSongs].reverse()} title="Trending Now" />
+                    <SongGrid songs={trendingSongs.length > 0 ? trendingSongs : []} title="Trending Now" />
                 ) : (
                     <SongGrid songs={initialSongs} title="Weekly Top Picks" />
                 )

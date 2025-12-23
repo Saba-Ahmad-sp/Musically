@@ -19,6 +19,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   activeTab: 'Home',
   searchQuery: '',
   searchResults: [],
+  trendingSongs: [],
   isSearching: false,
 
   play: () => set({ isPlaying: true }),
@@ -30,6 +31,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   setActiveTab: (tab: string) => set({ activeTab: tab }),
   setSearchQuery: (query: string) => set({ searchQuery: query }),
   setSearchResults: (songs: Song[]) => set({ searchResults: songs }),
+  setTrendingSongs: (songs: Song[]) => set({ trendingSongs: songs }),
   setIsSearching: (isSearching: boolean) => set({ isSearching }),
   toggleLike: (song: Song) => set((state) => {
       const isLiked = state.likedSongs.some(s => s.id === song.id);

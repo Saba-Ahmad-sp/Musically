@@ -29,6 +29,7 @@ export interface PlayerState {
   activeTab: string;
   searchQuery: string;
   searchResults: Song[];
+  trendingSongs: Song[];
   isSearching: boolean;
   
   // Actions
@@ -41,6 +42,7 @@ export interface PlayerState {
   setActiveTab: (tab: string) => void;
   setSearchQuery: (query: string) => void;
   setSearchResults: (songs: Song[]) => void;
+  setTrendingSongs: (songs: Song[]) => void;
   setIsSearching: (isSearching: boolean) => void;
   next: () => void;
   prev: () => void;

@@ -74,7 +74,7 @@ export const api = {
   getTrending: async (): Promise<Song[]> => {
     try {
       // Searching for "Latest Hindi" to simulate trending/fresh content
-      const res = await fetch(`${BASE_URL}/search/songs?query=latest%20hindi&limit=80`);
+      const res = await fetch(`${BASE_URL}/search/songs?query=trending&limit=40`);
       if (!res.ok) throw new Error("Failed to fetch trending");
       const data = await res.json();
       
