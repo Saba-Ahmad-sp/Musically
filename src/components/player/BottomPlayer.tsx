@@ -93,7 +93,7 @@ export default function BottomPlayer() {
   if (!currentSong) return null;
 
   const ControlsButtons = ({ mobile = false }) => (
-    <div className={`flex items-center ${mobile ? 'gap-6 justify-center w-full py-1' : 'gap-6 py-2'}`}>
+    <div className={`flex items-center ${mobile ? 'justify-between w-full px-6 py-2' : 'gap-6 py-2'}`}>
         <button 
             onClick={toggleShuffle}
             className={`text-white/50 hover:text-white transition-colors ${isShuffle ? 'text-green-400 hover:text-green-300' : ''}`}
@@ -108,7 +108,7 @@ export default function BottomPlayer() {
         </button>
         <button 
             onClick={() => isPlaying ? pause() : play()}
-            className={`bg-white rounded-full flex items-center justify-center text-black hover:scale-105 transition-transform shadow-lg shadow-white/10 ${mobile ? 'w-10 h-10' : 'w-12 h-12'}`}
+            className={`bg-white rounded-full flex items-center justify-center text-black hover:scale-105 transition-transform shadow-lg shadow-white/10 ${mobile ? 'w-12 h-12' : 'w-12 h-12'}`}
         >
             {isPlaying ? <Pause size={mobile ? 20 : 24} fill="black" /> : <Play size={mobile ? 20 : 24} fill="black" className="ml-1" />}
         </button>
