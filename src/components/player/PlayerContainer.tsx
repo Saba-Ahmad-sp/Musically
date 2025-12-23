@@ -185,17 +185,16 @@ function TabButton({ icon, label, active = false, onClick }: { icon: React.React
     return (
         <button 
             onClick={onClick}
-            className={`flex flex-col items-center justify-center gap-1 py-1 rounded-lg transition-colors w-full
+            title={label}
+            className={`flex items-center justify-center py-1 rounded-lg transition-colors w-full h-full
             ${active 
                 ? 'text-white' 
                 : 'text-white/50 hover:text-white/80'
             }`}
         >
-            <div className={`transition-transform ${active ? 'scale-110' : 'scale-100'}`}>
-                {/* We can clone and fill if we want, but color change is enough for now */}
+            <div className={`transition-transform ${active ? 'scale-125' : 'scale-100'}`}>
                 {icon}
             </div>
-            <span className="text-[10px] sm:text-xs font-medium truncate max-w-full">{label}</span>
         </button>
     )
 }
