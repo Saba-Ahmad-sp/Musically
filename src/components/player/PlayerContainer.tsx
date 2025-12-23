@@ -108,27 +108,27 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
          </div>
 
          {/* Mobile Tabs Navigation */}
-         <div className="md:hidden w-full px-4 py-4 overflow-x-auto custom-scrollbar flex items-center justify-center gap-3 sticky top-16 z-30 bg-black/20 backdrop-blur-sm border-b border-white/5">
+         <div className="md:hidden w-full px-2 py-3 grid grid-cols-4 gap-2 sticky top-16 z-30 bg-black/90 backdrop-blur-xl border-b border-white/5 shadow-2xl">
              <TabButton 
-                icon={<Home size={18} />} 
+                icon={<Home size={20} />} 
                 label="Home" 
                 active={activeTab === 'Home'} 
                 onClick={() => setActiveTab('Home')}
              />
              <TabButton 
-                icon={<Library size={18} />} 
+                icon={<Library size={20} />} 
                 label="Library" 
                 active={activeTab === 'Library'}
                 onClick={() => setActiveTab('Library')}
              />
              <TabButton 
-                icon={<Heart size={18} />} 
+                icon={<Heart size={20} />} 
                 label="Liked" 
                 active={activeTab === 'Liked'}
                 onClick={() => setActiveTab('Liked')}
              />
              <TabButton 
-                icon={<Plus size={18} />} 
+                icon={<Plus size={20} />} 
                 label="Create" 
                 active={activeTab === 'Create'}
                 onClick={() => setActiveTab('Create')}
@@ -188,14 +188,15 @@ function TabButton({ icon, label, active = false, onClick }: { icon: React.React
     return (
         <button 
             onClick={onClick}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-2 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-sm font-medium transition-all w-full
             ${active 
                 ? 'bg-white text-black shadow-lg shadow-white/10' 
                 : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/5'
             }`}
         >
-            {icon}
-            <span>{label}</span>
+            {/* Clone icon to adjust size on mobile if needed, or just rely on parent sizing */}
+            <div className="scale-75 sm:scale-100">{icon}</div>
+            <span className="truncate max-w-full">{label}</span>
         </button>
     )
 }
