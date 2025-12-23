@@ -23,18 +23,7 @@ export default function Sidebar() {
             <span className="font-medium">Home</span>
           </button>
           
-          <div className="relative group">
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/50 group-focus-within:text-white transition-colors">
-                  <Search size={24} />
-              </div>
-              <input 
-                  type="text" 
-                  placeholder="Search Songs..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent border border-transparent focus:border-white/10 rounded-lg py-2 pl-10 pr-2 text-white placeholder-white/30 focus:bg-white/5 outline-none transition-all"
-              />
-          </div>
+
           <button 
             onClick={() => setActiveTab('Trending')}
             className={`flex items-center gap-4 text-white hover:text-purple-400 transition-colors px-2 py-2 rounded-lg hover:bg-white/5 w-full ${activeTab === 'Trending' ? 'text-purple-400 bg-white/5' : ''}`}

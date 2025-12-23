@@ -93,8 +93,17 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                         </h1>
                      </div>
 
-                    {/* Desktop Placeholder (Empty for now as requested previously) */}
-                    <div className="hidden md:block" />
+                    {/* Desktop Search Bar (Right Aligned) */}
+                    <div className="hidden md:flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-[300px] focus-within:bg-white/10 focus-within:border-white/20 transition-all ml-auto">
+                        <Search size={18} className="text-white/50" />
+                        <input 
+                            type="text" 
+                            placeholder="Search Songs, Artists..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="bg-transparent border-none outline-none text-white placeholder-white/30 text-sm w-full"
+                        />
+                    </div>
 
                     {/* Mobile Search Button */}
                     <button 
