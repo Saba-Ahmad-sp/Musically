@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import FullPlayer from "./FullPlayer";
-import { Search, Home, Zap, Heart, Plus } from "lucide-react";
+import { Search, Home, Zap, Heart, Plus, Play } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface PlayerContainerProps {
@@ -17,7 +17,7 @@ interface PlayerContainerProps {
 }
 
 export default function PlayerContainer({ initialSongs }: PlayerContainerProps) {
-  const { currentSong, setSong, isFullPlayerOpen, setQueue, activeTab, setActiveTab, likedSongs, searchQuery, setSearchQuery, searchResults, setSearchResults } = usePlayerStore();
+  const { currentSong, setSong, isFullPlayerOpen, setQueue, activeTab, setActiveTab, likedSongs, searchQuery, setSearchQuery, searchResults, setSearchResults, isSearching, setIsSearching } = usePlayerStore();
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,13 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
 
   // Search API Logic
   useEffect(() => {
+      if (searchQuery.trim().length === 0) {
+          setSearchResults([]);
+          setIsSearching(false);
+          return;
+      }
+
+      setIsSearching(true);
       const delayDebounceFn = setTimeout(async () => {
           if (searchQuery.trim().length > 0) {
               const results = await api.searchSongs(searchQuery);
@@ -33,10 +40,11 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
           } else {
               setSearchResults([]);
           }
+          setIsSearching(false);
       }, 500);
 
       return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, setSearchResults]);
+  }, [searchQuery, setSearchResults, setIsSearching]);
 
   // Initialize store (optional, as we might want to start empty or with first song)
    useEffect(() => {
@@ -83,6 +91,33 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                      <button onClick={() => { setIsMobileSearchOpen(false); setSearchQuery(""); }} className="text-white/50 p-2">
                         Close
                      </button>
+                    {/* Mobile Search Results Dropdown */}
+                     {searchQuery.length > 0 && (
+                        <div className="absolute top-16 left-0 w-full bg-black/95 backdrop-blur-xl border-b border-white/10 max-h-[60vh] overflow-y-auto p-2 shadow-2xl">
+                             {isSearching ? (
+                                <div className="p-4 text-center text-white/50">Searching...</div>
+                             ) : searchResults.length > 0 ? (
+                                 <div className="space-y-1">
+                                    {searchResults.map(song => (
+                                         <div key={song.id} 
+                                              className="flex items-center gap-3 p-2 hover:bg-white/10 rounded-lg"
+                                              onClick={() => { setSong(song); setIsMobileSearchOpen(false); setSearchQuery(''); }}
+                                         >
+                                            <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0">
+                                                <Image src={song.coverUrl} alt={song.title} fill className="object-cover" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <h4 className="text-sm font-medium text-white truncate">{song.title}</h4>
+                                                <p className="text-xs text-white/50 truncate">{song.artist}</p>
+                                            </div>
+                                         </div>
+                                    ))}
+                                 </div>
+                             ) : (
+                                <div className="p-4 text-center text-white/50">No results found</div>
+                             )}
+                        </div>
+                     )}
                  </div>
              ) : (
                 <>
@@ -94,15 +129,51 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                      </div>
 
                     {/* Desktop Search Bar (Right Aligned) */}
-                    <div className="hidden md:flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-[300px] focus-within:bg-white/10 focus-within:border-white/20 transition-all ml-auto">
-                        <Search size={18} className="text-white/50" />
-                        <input 
-                            type="text" 
-                            placeholder="Search Songs, Artists..." 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-transparent border-none outline-none text-white placeholder-white/30 text-sm w-full"
-                        />
+                    <div className="hidden md:flex relative ml-auto z-50">
+                        <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-[300px] focus-within:bg-white/10 focus-within:border-white/20 transition-all">
+                            <Search size={18} className="text-white/50" />
+                            <input 
+                                type="text" 
+                                placeholder="Search Songs, Artists..." 
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="bg-transparent border-none outline-none text-white placeholder-white/30 text-sm w-full"
+                            />
+                        </div>
+                        {/* Desktop Dropdown Result */}
+                        {searchQuery.length > 0 && (
+                            <div className="absolute top-full right-0 mt-2 w-[400px] bg-black/90 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden max-h-[500px] overflow-y-auto custom-scrollbar ring-1 ring-white/5">
+                                {isSearching ? (
+                                    <div className="p-4 text-center text-white/50 flex items-center justify-center gap-2">
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        Searching...
+                                    </div>
+                                ) : searchResults.length > 0 ? (
+                                    <div className="p-2">
+                                        <h3 className="text-[10px] font-bold text-white/40 uppercase px-2 mb-2 tracking-wider">Top Results</h3>
+                                        {searchResults.map(song => (
+                                            <div key={song.id} 
+                                                className="flex items-center gap-3 p-2 hover:bg-white/10 rounded-lg cursor-pointer group transition-colors"
+                                                onClick={() => { setSong(song); setSearchQuery(''); }}
+                                            >
+                                                <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0">
+                                                    <Image src={song.coverUrl} alt={song.title} fill className="object-cover" />
+                                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <Play size={16} fill="white" />
+                                                    </div>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <h4 className="text-sm font-medium text-white truncate">{song.title}</h4>
+                                                    <p className="text-xs text-white/50 truncate">{song.artist}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="p-4 text-center text-white/50">No results found.</div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* Mobile Search Button */}
@@ -117,24 +188,21 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
          </div>
 
          <div className="w-full max-w-[1920px] mx-auto pt-4 md:pt-0 pb-48">
-             {searchQuery.length > 0 ? (
-                 <SongGrid songs={searchResults} title={`Search Results for "${searchQuery}"`} />
-             ) : (
-                activeTab === 'Liked' ? (
-                     likedSongs.length > 0 ? (
-                        <SongGrid songs={likedSongs} title="Your Liked Songs" />
-                     ) : (
-                        <div className="p-8 text-center text-white/50">
-                            <Heart size={48} className="mx-auto mb-4 opacity-20" />
-                            <p>No liked songs yet. Go explore!</p>
-                        </div>
-                     )
-                 ) : activeTab === 'Trending' ? (
-                     <SongGrid songs={[...initialSongs].reverse()} title="Trending Now" />
-                 ) : (
-                     <SongGrid songs={initialSongs} title="Recommended for You" />
-                 )
-             )}
+            {activeTab === 'Liked' ? (
+                    likedSongs.length > 0 ? (
+                    <SongGrid songs={likedSongs} title="Your Liked Songs" />
+                    ) : (
+                    <div className="p-8 text-center text-white/50">
+                        <Heart size={48} className="mx-auto mb-4 opacity-20" />
+                        <p>No liked songs yet. Go explore!</p>
+                    </div>
+                    )
+                ) : activeTab === 'Trending' ? (
+                    <SongGrid songs={[...initialSongs].reverse()} title="Trending Now" />
+                ) : (
+                    <SongGrid songs={initialSongs} title="Recommended for You" />
+                )
+            }
          </div>
       </main>
 
