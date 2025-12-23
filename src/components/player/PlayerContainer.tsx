@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import FullPlayer from "./FullPlayer";
-import { Search, Home, Library, Heart, Plus } from "lucide-react";
+import { Search, Home, Zap, Heart, Plus } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface PlayerContainerProps {
@@ -120,11 +120,10 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                             <p>No liked songs yet. Go explore!</p>
                         </div>
                      )
+                 ) : activeTab === 'Trending' ? (
+                     <SongGrid songs={[...initialSongs].reverse()} title="Trending Now" />
                  ) : (
-                     <>
-                        <SongGrid songs={initialSongs} title="Recommended for You" />
-                        <SongGrid songs={[...initialSongs].reverse()} title="Trending Now" />
-                     </>
+                     <SongGrid songs={initialSongs} title="Recommended for You" />
                  )
              )}
          </div>
@@ -154,10 +153,10 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
             onClick={() => setActiveTab('Home')}
             />
             <TabButton 
-            icon={<Library size={20} />} 
-            label="Library" 
-            active={activeTab === 'Library'}
-            onClick={() => setActiveTab('Library')}
+            icon={<Zap size={20} />} 
+            label="Trending" 
+            active={activeTab === 'Trending'} 
+            onClick={() => setActiveTab('Trending')}
             />
             <TabButton 
             icon={<Heart size={20} />} 

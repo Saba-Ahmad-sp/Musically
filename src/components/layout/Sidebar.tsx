@@ -1,7 +1,7 @@
 "use client";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
-import { Home, Search, Library, Plus, Heart } from "lucide-react";
+import { Home, Search, Zap, Plus, Heart } from "lucide-react";
 
 export default function Sidebar() {
   const { searchQuery, setSearchQuery, activeTab, setActiveTab } = usePlayerStore();
@@ -35,9 +35,12 @@ export default function Sidebar() {
                   className="w-full bg-transparent border border-transparent focus:border-white/10 rounded-lg py-2 pl-10 pr-2 text-white placeholder-white/30 focus:bg-white/5 outline-none transition-all"
               />
           </div>
-          <button className="flex items-center gap-4 text-white/70 hover:text-white transition-colors px-2 py-2 rounded-lg hover:bg-white/5 w-full">
-            <Library size={24} />
-            <span className="font-medium">Your Library</span>
+          <button 
+            onClick={() => setActiveTab('Trending')}
+            className={`flex items-center gap-4 text-white hover:text-purple-400 transition-colors px-2 py-2 rounded-lg hover:bg-white/5 w-full ${activeTab === 'Trending' ? 'text-purple-400 bg-white/5' : ''}`}
+          >
+            <Zap size={24} />
+            <span className="font-medium">Trending</span>
           </button>
         </div>
 
