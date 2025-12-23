@@ -128,10 +128,10 @@ export default function BottomPlayer() {
 
       {/* Center: Controls */}
       <div className="w-full md:w-1/3 flex flex-col items-center gap-1 md:gap-2 max-w-[500px]" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center gap-4 sm:gap-6">
+        <div className="flex items-center gap-4 sm:gap-6 py-2">
             <button 
                 onClick={toggleShuffle}
-                className={`hidden sm:block text-white/50 hover:text-white transition-colors ${isShuffle ? 'text-green-400 hover:text-green-300' : ''}`}
+                className={`text-white/50 hover:text-white transition-colors ${isShuffle ? 'text-green-400 hover:text-green-300' : ''}`}
             >
                 <Shuffle size={20} />
             </button>
@@ -155,7 +155,7 @@ export default function BottomPlayer() {
             </button>
             <button 
                 onClick={toggleRepeat}
-                className={`hidden sm:block text-white/50 hover:text-white transition-colors ${repeatMode !== 'none' ? 'text-green-400 hover:text-green-300' : ''}`}
+                className={`text-white/50 hover:text-white transition-colors ${repeatMode !== 'none' ? 'text-green-400 hover:text-green-300' : ''}`}
             >
                 {repeatMode === 'one' ? <Repeat1 size={20} /> : <Repeat size={20} />}
             </button>
