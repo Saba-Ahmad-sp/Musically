@@ -107,35 +107,7 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
              )}
          </div>
 
-         {/* Mobile Tabs Navigation */}
-         <div className="md:hidden w-full px-2 py-3 grid grid-cols-4 gap-2 sticky top-16 z-30 bg-black/90 backdrop-blur-xl border-b border-white/5 shadow-2xl">
-             <TabButton 
-                icon={<Home size={20} />} 
-                label="Home" 
-                active={activeTab === 'Home'} 
-                onClick={() => setActiveTab('Home')}
-             />
-             <TabButton 
-                icon={<Library size={20} />} 
-                label="Library" 
-                active={activeTab === 'Library'}
-                onClick={() => setActiveTab('Library')}
-             />
-             <TabButton 
-                icon={<Heart size={20} />} 
-                label="Liked" 
-                active={activeTab === 'Liked'}
-                onClick={() => setActiveTab('Liked')}
-             />
-             <TabButton 
-                icon={<Plus size={20} />} 
-                label="Create" 
-                active={activeTab === 'Create'}
-                onClick={() => setActiveTab('Create')}
-             />
-         </div>
-
-         <div className="w-full max-w-[1920px] mx-auto pt-4 md:pt-0">
+         <div className="w-full max-w-[1920px] mx-auto pt-4 md:pt-0 pb-48">
              {searchQuery.length > 0 ? (
                  <SongGrid songs={searchResults} title={`Search Results for "${searchQuery}"`} />
              ) : (
@@ -166,18 +138,43 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-3xl pt-8"
+                className="fixed inset-0 z-[70] bg-black/95 backdrop-blur-3xl pt-8"
             >
                 <FullPlayer initialSongs={initialSongs} />
             </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Mobile Bottom Tabs Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 w-full h-[60px] bg-black/95 backdrop-blur-xl border-t border-white/10 z-[60] grid grid-cols-4 gap-1 px-2 py-1 items-center">
+            <TabButton 
+            icon={<Home size={20} />} 
+            label="Home" 
+            active={activeTab === 'Home'} 
+            onClick={() => setActiveTab('Home')}
+            />
+            <TabButton 
+            icon={<Library size={20} />} 
+            label="Library" 
+            active={activeTab === 'Library'}
+            onClick={() => setActiveTab('Library')}
+            />
+            <TabButton 
+            icon={<Heart size={20} />} 
+            label="Liked" 
+            active={activeTab === 'Liked'}
+            onClick={() => setActiveTab('Liked')}
+            />
+            <TabButton 
+            icon={<Plus size={20} />} 
+            label="Create" 
+            active={activeTab === 'Create'}
+            onClick={() => setActiveTab('Create')}
+            />
+      </div>
+
       {/* Bottom Player (Fixed) */}
-      {/* Hide bottom player when full player is open OR keep it? Usually hidden or effectively replaced. 
-          The FullPlayer has its own controls. Let's keep it mounted but maybe z-index lower or let FullPlayer cover it.
-          Since FullPlayer has z-[60] and BottomPlayer has z-50, FullPlayer covers it. 
-      */}
+      {/* Sits above tabs on mobile (bottom-[60px]) and at bottom on desktop (bottom-0) */}
       <BottomPlayer />
 
     </div>
@@ -188,15 +185,17 @@ function TabButton({ icon, label, active = false, onClick }: { icon: React.React
     return (
         <button 
             onClick={onClick}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1 py-2 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-sm font-medium transition-all w-full
+            className={`flex flex-col items-center justify-center gap-1 py-1 rounded-lg transition-colors w-full
             ${active 
-                ? 'bg-white text-black shadow-lg shadow-white/10' 
-                : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/5'
+                ? 'text-white' 
+                : 'text-white/50 hover:text-white/80'
             }`}
         >
-            {/* Clone icon to adjust size on mobile if needed, or just rely on parent sizing */}
-            <div className="scale-75 sm:scale-100">{icon}</div>
-            <span className="truncate max-w-full">{label}</span>
+            <div className={`transition-transform ${active ? 'scale-110' : 'scale-100'}`}>
+                {/* We can clone and fill if we want, but color change is enough for now */}
+                {icon}
+            </div>
+            <span className="text-[10px] sm:text-xs font-medium truncate max-w-full">{label}</span>
         </button>
     )
 }

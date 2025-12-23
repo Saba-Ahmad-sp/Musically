@@ -98,7 +98,7 @@ export default function BottomPlayer() {
   return (
     <div 
         onClick={() => setFullPlayerOpen(true)}
-        className="fixed bottom-0 left-0 w-full min-h-[140px] md:h-24 bg-black/80 backdrop-blur-3xl border-t border-white/10 z-50 px-4 py-4 md:py-0 md:px-6 flex flex-col md:flex-row items-center justify-between cursor-pointer hover:bg-black/90 transition-colors group"
+        className="fixed bottom-[60px] md:bottom-0 left-0 w-full min-h-[140px] md:h-24 bg-black/80 backdrop-blur-3xl border-t border-white/10 z-50 px-4 py-4 md:py-0 md:px-6 flex flex-col md:flex-row items-center justify-between cursor-pointer hover:bg-black/90 transition-colors group"
     >
        {/* Hidden Audio */}
        <audio 
