@@ -33,7 +33,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-        <div className="pt-6 border-t border-white/10 space-y-3">
+        <div className="space-y-3">
              <button className="flex items-center gap-4 text-white/70 hover:text-white transition-colors px-2 py-2 rounded-lg hover:bg-white/5 w-full group">
                 <div className="bg-white/10 p-1 rounded-sm group-hover:bg-white/20">
                     <Plus size={16} />
