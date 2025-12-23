@@ -31,18 +31,20 @@ export default function BottomPlayer() {
   useEffect(() => {
     if (audioRef.current) {
         if (isPlaying) {
-            audioRef.current.play().catch(e => console.error("Playback failed", e));
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    // Auto-play prevention or interrupted
+                    console.log("Playback prevented or interrupted handled");
+                });
+            }
         } else {
             audioRef.current.pause();
         }
     }
   }, [isPlaying, currentSong]);
 
-  useEffect(() => {
-      if(currentSong && isPlaying && audioRef.current){
-          audioRef.current.play().catch(e => console.error("Playback failed", e));
-      }
-  }, [currentSong?.id, isPlaying]);
+  // Removed redundant effect
 
   // Sync Audio with Store (for Seeking)
   useEffect(() => {
