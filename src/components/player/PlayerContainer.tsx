@@ -200,7 +200,7 @@ export default function PlayerContainer({ initialSongs }: PlayerContainerProps) 
                 ) : activeTab === 'Trending' ? (
                     <SongGrid songs={[...initialSongs].reverse()} title="Trending Now" />
                 ) : (
-                    <SongGrid songs={initialSongs} title="Recommended for You" />
+                    <SongGrid songs={initialSongs} title="Top Picks" />
                 )
             }
          </div>
