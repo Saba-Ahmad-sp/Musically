@@ -73,7 +73,7 @@ export const api = {
 
   getTrending: async (): Promise<Song[]> => {
     try {
-      // Searching for "Latest Hindi" to simulate trending/fresh content
+      // "Trending" endpoint or search
       const res = await fetch(`${BASE_URL}/search/songs?query=trending&limit=40`);
       if (!res.ok) throw new Error("Failed to fetch trending");
       const data = await res.json();
@@ -83,19 +83,24 @@ export const api = {
       return results.map(mapSongFromApi);
     } catch (error) {
        console.error("Trending API Error:", error);
-       // Fallback mock data to prevent crash if API is flaky
-       return [
-          {
-              id: "mock1",
-              title: "API Unavailable - Mock Song",
-              artist: "System",
-              album: "Error Handling",
-              coverUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&q=80",
-              audioUrl: "",
-              duration: 0
-          }
-       ];
+       return [];
     }
+  },
+
+  getWeeklyTop: async (): Promise<Song[]> => {
+      try {
+        // Querying for "weekly top" to simulate weekly charts
+        const res = await fetch(`${BASE_URL}/search/songs?query=weekly%20top%2020&limit=20`);
+        if (!res.ok) throw new Error("Failed to fetch weekly top");
+        const data = await res.json();
+        
+        const results = data.data?.results || data.results || data.data || [];
+        if (!Array.isArray(results)) return [];
+        return results.map(mapSongFromApi);
+      } catch (error) {
+        console.error("Weekly Top API Error:", error);
+        return [];
+      }
   },
   
   getSongById: async (id: string): Promise<Song | null> => {
